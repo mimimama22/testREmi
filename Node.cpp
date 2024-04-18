@@ -59,3 +59,35 @@ void Node::setName(const std::string & N)
 {
 	name = N;
 }
+
+int Node::getMinDistance()
+{
+	return minDisance;
+}
+
+void Node::setMindistance(int m)
+{
+	minDisance = m;
+}
+
+bool Node::getVisited()
+{
+	return visited;
+}
+
+void Node::setVisited(bool v)
+{
+	visited = v;
+}
+
+Node* Node::getPredecessor()
+{
+	return predecessor;
+}
+
+void Node::setPredecessor(Node* p)
+{
+	predecessor = p;
+}
+
+

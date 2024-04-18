@@ -1,13 +1,66 @@
 #include "Node.h"
 
 
+Node* getMinDistanceNode(std::vector<Node*> graph)
+{
+	int mindistance = INT32_MAX;
+	Node* minNode = nullptr;
+
+	for (Node* node : graph)
+	{
+		if(!node->getVisited() && node->getMinDistance() < mindistance)
+		{
+			mindistance = node->getMinDistance();
+			minNode = node;
+		}
+	}
+	return minNode;
+}
+
+void dijkstra(std::vector <Node*>& graph , Node* source)
+{
+	source->setMindistance(0);
+	while(true)
+	{
+		Node * currentNode = getMinDistanceNode(graph);
+
+		if (currentNode == nullptr) break;
+
+		currentNode->setVisited(true);
+
+		for (std::pair<Node* , int> & neighbors : currentNode->getNeighbors())
+		{
+			Node* neighborsNode = neighbors.first;
+			int weight = neighbors.second;
+			int distanceThroughU = currentNode->getMinDistance()+weight;
+
+			if (distanceThroughU<neighborsNode->getMinDistance())
+			{
+				neighborsNode->setMindistance(distanceThroughU);
+				neighborsNode->setPredecessor(currentNode);
+			}
+				
+		}
+		
+	}
+
+}
+
+void printPath(Node* target) {
+	if (target->getPredecessor() == nullptr) {
+		std::cout << target->getName();
+		return;
+	}
+	printPath(target->getPredecessor());
+	std::cout << " -> " << target->getName();
+}
 
 
 
 int main()
 {
 	
-	std::vector<Node*> graph;
+	std::vector<Node* > graph;
 
 	Node A("A");
 	Node B("B");
@@ -27,7 +80,7 @@ int main()
 	B.addNeighbors(&F, 80);
 
 	C.addNeighbors(&G, 186);
-	C.addNeighbors(&H, 103);
+	C.addNeighbors(&H, 103); 
 
 	D.addNeighbors(&H, 183);
 
@@ -50,13 +103,23 @@ int main()
 	graph.emplace_back(&H);
 	graph.emplace_back(&I);
 	graph.emplace_back(&J);
+	
+	
+	dijkstra( graph,&A);
 
-	for (Node* n : graph)
+	for (Node* node : graph)
 	{
-		n->showNeighbors();
-		std::cout << std::endl;
+		std::cout << " la distance de A a "<<node->getName()<<" est de ";
+		if (node->getMinDistance() == INT_MAX)
+			std::cout<<"infinie \n";
+		else
+			std::cout<<node->getMinDistance();
+		std::cout << " (path: ";
+		printPath(node);
+		std::cout<<")\n";
 	}
-
+	
+	
 
 
 

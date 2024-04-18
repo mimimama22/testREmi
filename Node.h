@@ -9,6 +9,11 @@ private:
 	std:: string name;
 	std::vector<std::pair<Node*,int>> neighbors;
 
+	int minDisance = INT_MAX;
+	bool visited = false;
+
+	Node* predecessor = nullptr;
+
 
 public:
 
@@ -27,7 +32,14 @@ public:
 	std::string getName()const;
 	void setName(const std::string &);
 
+	int getMinDistance();
+	void setMindistance(int);
 
+	bool getVisited();
+	void setVisited(bool);
+
+	Node* getPredecessor();
+	void setPredecessor(Node*);
 
 };
 
