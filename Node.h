@@ -29,7 +29,7 @@ public:
 
 	void showNeighbors();
 
-	std::string getName()const;
+	std::string getName();
 	void setName(const std::string &);
 
 	int getMinDistance();

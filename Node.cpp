@@ -50,7 +50,7 @@ void Node::showNeighbors()
 	}
 }
 
-std::string Node::getName() const
+std::string Node::getName()
 {
 	return name;
 }

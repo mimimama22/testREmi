@@ -1,6 +1,7 @@
 #include "Node.h"
+#include <string>
 
-
+/*return la node la plus proche non visiter du point de depart*/
 Node* getMinDistanceNode(std::vector<Node*> graph)
 {
 	int mindistance = INT32_MAX;
@@ -16,8 +17,8 @@ Node* getMinDistanceNode(std::vector<Node*> graph)
 	}
 	return minNode;
 }
-
-void dijkstra(std::vector <Node*>& graph , Node* source)
+/*algo de dijkstra*/
+void dijkstra(const std::vector <Node*>& graph , Node* source)
 {
 	source->setMindistance(0);
 	while(true)
@@ -34,7 +35,7 @@ void dijkstra(std::vector <Node*>& graph , Node* source)
 			int weight = neighbors.second;
 			int distanceThroughU = currentNode->getMinDistance()+weight;
 
-			if (distanceThroughU<neighborsNode->getMinDistance())
+			if (distanceThroughU < neighborsNode->getMinDistance())
 			{
 				neighborsNode->setMindistance(distanceThroughU);
 				neighborsNode->setPredecessor(currentNode);
@@ -45,7 +46,7 @@ void dijkstra(std::vector <Node*>& graph , Node* source)
 	}
 
 }
-
+/*affiche la node predeceseur*/
 void printPath(Node* target) {
 	if (target->getPredecessor() == nullptr) {
 		std::cout << target->getName();
@@ -59,8 +60,8 @@ void printPath(Node* target) {
 
 int main()
 {
-	
 	std::vector<Node* > graph;
+	
 
 	Node A("A");
 	Node B("B");
@@ -104,22 +105,50 @@ int main()
 	graph.emplace_back(&I);
 	graph.emplace_back(&J);
 	
+	std::string source;
+	std::string destination;
+	Node* nodeSource = nullptr;
+	Node* nodeDestination = nullptr;
+	//recupper la node de depart et la node d arriver
+	std::cout<<"Debut : ";
+	std::cin>> source;
+	std::cout<< "fin : ";
+	std::cin>>destination;
 	
-	dijkstra( graph,&A);
+	for (Node* node : graph)
+	{	
+		if (node->getName() == source)
+		{
+			nodeSource = node;
+			break;
+		}
+	}
 
 	for (Node* node : graph)
 	{
-		std::cout << " la distance de A a "<<node->getName()<<" est de ";
-		if (node->getMinDistance() == INT_MAX)
-			std::cout<<"infinie \n";
-		else
-			std::cout<<node->getMinDistance();
-		std::cout << " (path: ";
-		printPath(node);
-		std::cout<<")\n";
+		if (node->getName() == destination)
+		{
+			nodeDestination = node;
+			break;
+		}
+			
 	}
-	
-	
+
+	//test si la node entre existe. si,oui lance dijkstra
+	if (nodeSource != nullptr)
+		dijkstra( graph,nodeSource);		
+	else
+		std::cout<<"error\n";
+
+	//affiche la distance entre les deux node et le chemin pour si rendre
+	std::cout << " la distance de "<<nodeSource->getName()<<" a "<<nodeDestination->getName()<<" est de ";
+	if (J.getMinDistance() == INT_MAX)	//si il n existe pas de chemin
+		std::cout<<"infinie \n";		
+	else
+		std::cout<<nodeDestination->getMinDistance();
+	std::cout << " (path: ";
+	printPath(nodeDestination);
+	std::cout<<")\n";
 
 
 
